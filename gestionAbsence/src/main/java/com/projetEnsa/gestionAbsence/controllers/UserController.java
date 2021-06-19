@@ -21,8 +21,8 @@ import com.projetEnsa.gestionAbsence.Dto.AdminDto;
 import com.projetEnsa.gestionAbsence.request.UserRequest;
 import com.projetEnsa.gestionAbsence.services.AdminService;
  
-
-@CrossOrigin("http://localhost:4200") //access from angular port
+//chrome.exe --user-data-dir="C://Chrome dev session" --disable-web-security
+@CrossOrigin("http://localhost:4200") //acces from angular port
 @RestController 
 @RequestMapping("/users") // localhost:8080/users  mapper url(requette)
 public class UserController  {

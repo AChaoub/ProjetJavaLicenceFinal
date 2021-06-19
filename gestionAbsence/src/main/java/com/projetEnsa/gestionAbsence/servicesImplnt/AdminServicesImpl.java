@@ -1,12 +1,12 @@
 package com.projetEnsa.gestionAbsence.servicesImplnt;
 
-import java.util.ArrayList; 
+import java.util.ArrayList;
 import com.projetEnsa.gestionAbsence.repositories.UserRepository;
 
 import com.projetEnsa.gestionAbsence.shared.Utils;
- 
+
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired; 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,21 +17,18 @@ import com.projetEnsa.gestionAbsence.Dto.AdminDto;
 import com.projetEnsa.gestionAbsence.entities.Administrateur;
 import com.projetEnsa.gestionAbsence.services.AdminService;
 
-
-@Service  // indique que cette class est un service
+@Service // indique que cette class est un service
 public class AdminServicesImpl implements AdminService {
 
-	@Autowired  //injecter le bean ** Injection des dépendances
+	@Autowired // injecter le bean ** Injection des dépendances
 	UserRepository userRepository;
-	
-	@Autowired  //injecter le bean ** Injection des dépendances
+
+	@Autowired // injecter le bean ** Injection des dépendances
 	BCryptPasswordEncoder bCryptPasswordEncoder;
- 
-	@Autowired  //injecter le bean ** Injection des dépendances
+
+	@Autowired // injecter le bean ** Injection des dépendances
 	Utils util;
-	
-	
-	
+
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
@@ -58,7 +55,6 @@ public class AdminServicesImpl implements AdminService {
 		return userDto;
 	}
 
-
 	@Override
 	public AdminDto getUserByUserId(String userId) {
 
@@ -76,31 +72,27 @@ public class AdminServicesImpl implements AdminService {
 
 	@Override
 	public AdminDto createAdmin(AdminDto user) {
- 
 
 		Administrateur userEntity = new Administrateur();
 
 		Administrateur checkUser = userRepository.findByEmailAdmin(user.getEmailAdmin());
 
-			if (checkUser != null)
-				throw new RuntimeException("User Alrady Exists !");
+		if (checkUser != null)
+			throw new RuntimeException("User Alrady Exists !");
 
-			BeanUtils.copyProperties(user, userEntity);
+		BeanUtils.copyProperties(user, userEntity);
 
-			userEntity.setEncyptePassword(bCryptPasswordEncoder.encode(user.getPasswordAdmin()));
+		userEntity.setEncyptePassword(bCryptPasswordEncoder.encode(user.getPasswordAdmin()));
 
-			userEntity.setUserId(util.generateStringId(32));
+		userEntity.setUserId(util.generateStringId(32));
 
-			Administrateur newUser = userRepository.save(userEntity);
+		Administrateur newUser = userRepository.save(userEntity);
 
-			AdminDto userDto = new AdminDto();
-			BeanUtils.copyProperties(newUser, userDto);
+		AdminDto userDto = new AdminDto();
+		BeanUtils.copyProperties(newUser, userDto);
 
-			return userDto;
-		
+		return userDto;
 
 	}
-
- 
 
 }
